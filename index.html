@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Azeem Saleem — Home Furniture & Office Collection</title>
+  <style>
+    /* Basic reset */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%; overflow-x:hidden;}
+    body{
+      font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      line-height:1.5;
+      color:#2b2b2b;
+      background:#efe9e3;
+    }
+
+    :root{
+      --wood-1:#5a3b2e;
+      --wood-2:#8f6a55;
+      --accent:#cfa16b; 
+      
+    }
+
+    header{
+      background:linear-gradient(90deg,var(--wood-1),#5c3f31 40%, #6f4f3f 100%);
+      color:white;
+      padding:18px 22px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      box-shadow:0 10px 50px rgba(15,10,8,0.18);
+      position:relative;
+      /* z-index:1001; ensure header is above hero */
+    }
+
+    /* Logo */
+    .logo{
+      display:flex;align-items:center;gap:12px;font-weight:700;font-size:20px;
+    }
+    .logo .mark{
+      width:48px;height:48px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#b7834a);
+      display:flex;align-items:center;justify-content:center;color:#3b2a1f;font-weight:800;box-shadow:inset 0 -6px 12px rgba(0,0,0,0.12)
+    }
+    /* Navigation */
+    nav ul{
+      display:flex;
+      gap:18px;
+      list-style:none;
+    }
+    nav a{
+      color:rgba(255,255,255,0.95);
+      text-decoration:none;
+      font-weight:600;
+    }
+    nav a:hover{opacity:0.9}
+
+    /* Hamburger */
+    .hamburger{
+      display:none;
+      flex-direction:column;
+      justify-content:space-between;
+      width:24px;
+      height:18px;
+      cursor:pointer;
+      z-index:1002;
+    }
+    .hamburger span{
+      display:block;
+      height:3px;
+      background:#fff;
+      border-radius:2px;
+      transition: 0.3s;
+    }
+
+    /* Mobile menu */
+    .mobile-menu{
+      display:none;
+      flex-direction:column;
+      background:linear-gradient(90deg,var(--wood-1),#5c3f31 40%, #6f4f3f 100%);
+      position:absolute;
+      top:100%;
+      right:0;
+      left:0;
+      padding:12px 18px;
+      box-shadow:0 6px 18px rgba(15,10,8,0.18);
+      animation: slideDown 0.3s ease forwards;
+      align-items: center;
+      z-index:1003; /* menu above everything */
+    }
+
+    .mobile-menu.show {
+     display: flex;
+    }
+    .mobile-menu a{
+      padding:14px 0;
+      font-weight:600;
+      color:#fff;
+      text-decoration: none;
+    }
+
+    @keyframes slideDown{
+      0%{opacity:0;transform:translateY(-20px);}
+      100%{opacity:1;transform:translateY(0);}
+    }
+
+    /* Mobile menu backdrop */
+    .menu-backdrop{
+      position:fixed;
+      inset:0;
+      background: rgba(0,0,0,0.4);
+      display:none;
+      z-index:1000;
+    }
+    .menu-backdrop.show{display:block;}
+
+    /* Hero */
+    .hero{
+      background-image:linear-gradient(180deg, rgba(31,18,12,0.18), rgba(31,18,12,0.12)), url('https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1600&q=60');
+      background-size:cover;
+      background-position:center;
+      min-height:420px;
+      display:flex;
+      align-items:center;
+      padding:56px 22px;
+      color:#fff;
+    }
+    .hero-inner{max-width:1100px;margin:0 auto;display:flex;gap:28px;align-items:center;flex-wrap:wrap}
+    .hero-copy{flex:1;min-width:280px}
+    .hero h1{font-size:38px;letter-spacing:-0.4px;margin-bottom:10px}
+    .hero p{opacity:0.95;margin-bottom:18px}
+    .btn{display:inline-block;background:var(--accent);color:#3b2a1f;padding:12px 18px;border-radius:8px;text-decoration:none;font-weight:700}
+
+    /* categories */
+    .container{max-width:1100px;margin:28px auto;padding:0 18px}
+    .categories{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-bottom:26px}
+    .card{background:white;border-radius:12px;overflow:hidden;box-shadow:0 6px 20px rgba(25,20,18,0.06)}
+    .card img{width:100%;height:190px;object-fit:cover;display:block}
+    .card .card-body{padding:16px}
+    .card h3{margin-bottom:8px}
+    .card p{color:var(--muted);font-size:14px}
+
+    /* featured products */
+    .products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+    .product{background:linear-gradient(180deg,#fff,#fbf7f5);border-radius:10px;overflow:hidden;border:1px solid rgba(20,15,12,0.03)}
+    .product img{width:100%;height:180px;object-fit:cover}
+    .product .meta{padding:12px}
+    .price{font-weight:800;color:var(--wood-1)}
+    .view-btn{
+      display:inline-block; 
+      margin-top:8px;
+      padding:8px 12px;
+      border-radius:8px;
+      background:transparent;
+      border:1px solid rgba(0,0,0,0.06);
+      cursor:pointer
+    }
+
+    /* custom order */
+    .custom{display:flex;gap:18px;align-items:center;padding:18px;background:linear-gradient(90deg,#fff9f5,#f6efe7);border-radius:12px;margin:18px 0}
+    .custom .left{flex:1}
+    .custom .right{width:300px}
+    .small{font-size:14px;color:#5b4a3f}
+
+    footer{padding:20px 22px;background:#291f1b;color:#fff;margin-top:28px}
+    .footer-inner{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+
+    /* modal */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(9,7,6,0.45);display:flex;align-items:center;justify-content:center;padding:20px;visibility:hidden;opacity:0;transition:opacity .18s ease,visibility .18s}
+    .modal{max-width:900px;background:#fff;border-radius:10px;overflow:hidden;display:flex;gap:0;box-shadow:0 10px 40px rgba(18,12,10,0.35)}
+    .modal .left{flex:1}
+    .modal img{width:100%;height:100%;object-fit:cover}
+    .modal .right{width:420px;padding:18px}
+    .modal h3{margin-bottom:8px}
+    .actions{display:flex;gap:12px;margin-top:12px}
+    .btn-call{background:#1b5f3a;color:#fff;padding:10px 12px;border-radius:8px;text-decoration:none}
+    .btn-whatsapp{background:#25D366;color:#fff;padding:10px 12px;border-radius:8px;text-decoration:none}
+
+    .show{visibility:visible;opacity:1}
+
+    /* Card hover */
+    .card {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .card:hover {
+      transform: scale(1.02);
+      transition: 0.3s;
+    }
+
+    /* Responsive */
+    @media (max-width:760px){
+      nav ul{display:none}
+      .hamburger{display:flex}
+      .hero{min-height:360px}
+      .hero h1{font-size:26px}
+      .modal{flex-direction:column}
+      .modal .right{width:100%}
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <div class="mark">AS</div>
+      <div>
+        <div style="font-size:14px;opacity:0.95">Azeem Saleem</div>
+        <div style="font-size:12px;opacity:0.85">Home & Office Furniture</div>
+      </div>
+    </div>
+    
+
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="house.html">Furniture</a></li>
+        <li><a href="office.html">Office</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="mobile-menu" id="mobileMenu">
+      <a href="index.html">Home</a>
+      <a href="house.html">Furniture</a>
+      <a href="office.html">Office</a>
+      <a href="#contact">Contact</a>
+      </div>
+      </nav>
+  </header>
+  <div class="menu-backdrop" id="menuBackdrop"></div>
+
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <h1>Quality Furniture Crafted with Elegance</h1>
+        <p>Premium wood furniture — designed and built in Pakistan. Home collections and office setups made to last.</p>
+        <a class="btn" href="#collections">View Collection</a>
+      </div>
+      <div style="width:420px;background:rgba(255,255,255,0.06);padding:22px;border-radius:10px">
+        <h3 style="color:#fff;margin-bottom:8px">Call / WhatsApp</h3>
+        <p style="color:#fff;opacity:0.95;margin-bottom:12px">Need help? Speak to our design team directly.</p>
+        <a class="btn" href="tel:+923337480888" style="display:inline-block;margin-right:10px">Call Us</a>
+        <a class="btn" href="https://wa.me/923337480888" style="display:inline-block">WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <main class="container">
+    <section class="categories">
+      <article class="card">
+        <a href="house.html" class="card">
+        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=60" alt="Home Furniture">
+        <div class="card-body">
+          <h3>Home Decors</h3>
+          <p>Living room, bedroom and dining — handcrafted wooden pieces for every home.</p>
+        </div>
+        </a>
+      </article>
+
+      <article class="card">
+        <a href="office.html" class="card">
+        <img src="new.jpg" alt="Office Furniture">
+        <div class="card-body">
+          <h3>Office Collection</h3>
+          <p>Robust desks and ergonomic designs to elevate your workspace.</p>
+        </div>
+        </a>
+      </article>
+    </section>
+
+    <section id="collections">
+      <h2 style="margin-bottom:12px">Featured Products</h2>
+      <div class="products" id="productGrid"></div>
+    </section>
+
+    <section id="contact" style="margin-top:22px">
+      <h2>Contact</h2>
+      <p class="small">Address: WirelessPull — Rahim Yar Khan, Pakistan</p>
+      <p class="small">Phone: <a href="tel:+923337480888">+92 3337480888</a> | WhatsApp: <a href="https://wa.me/923337480888">Message us</a></p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <strong>Azeem Saleem</strong>
+        <div style="font-size:13px;opacity:0.9">Wood Furniture — Pakistan</div>
+      </div>
+      <div>
+        <a href="https://wa.me/923337480888" style="color:#fff;text-decoration:none;font-weight:700">WhatsApp</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal -->
+  <div id="modalBackdrop" class="modal-backdrop">
+    <div class="modal">
+      <div class="left"><img id="modalImg" src="" alt="product"></div>
+      <div class="right">
+        <h3 id="modalTitle">Product Title</h3>
+        <p id="modalDesc" style="color:#5b4a3f">Product description</p>
+        <div style="margin-top:10px"><span class="price" id="modalPrice">PKR 0</span></div>
+        <div class="actions">
+          <a id="callBtn" class="btn-call" href="tel:+923337480888">Call Us</a>
+          <a id="waBtn" class="btn-whatsapp" href="https://wa.me/923337480888">WhatsApp</a>
+        </div>
+        <div style="margin-top:12px">
+          <button id="closeModal" class="view-btn">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ 
+
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const backdrop = document.getElementById('menuBackdrop');
+
+    hamburger.addEventListener('click',()=>{
+      const isOpen = mobileMenu.style.display==='flex';
+      mobileMenu.style.display = isOpen ? 'none' : 'flex';
+      backdrop.classList.toggle('show', !isOpen);
+    });
+
+    backdrop.addEventListener('click', ()=>{
+      mobileMenu.style.display = 'none';
+      backdrop.classList.remove('show');
+    });
+
+    // Sample products
+    const products = [
+      {id:1,title:'Oak Dining Table',price:'PKR 100,000',img:'',desc:'Solid oak dining table — seats 6 comfortably. Finished with natural oil.'},
+      {id:2,title:'Classic Wooden Bed',price:'PKR 100,000',img:'',desc:'King-size bed with solid frame and storage drawers.'},
+      {id:3,title:'Ergonomic Office Desk',price:'PKR 100,500',img:'' ,desc:'Spacious desk with cable management and wood veneer.'},
+      {id:4,title:'Wooden Bookshelf',price:'PKR 100,900',img:'',desc:'Five-tier bookshelf for living room or office.'},
+      {id:5,title:'Coffee Table',price:'PKR 100,800',img:'',desc:'Low coffee table with brass inlay.'},
+      {id:6,title:'Reception Sofa',price:'PKR 100,000',img:'',desc:'Comfortable three-seater — upholstered and strong wooden base.'}
+    ];
+
+    const grid = document.getElementById('productGrid');
+    products.forEach(p=>{
+      const el = document.createElement('article');
+      el.className='product';
+      el.innerHTML = `
+        <img src="${p.img}" alt="${p.title}">
+        <div class="meta">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <strong>${p.title}</strong>
+            <div class="price">${p.price}</div>
+          </div>
+          <div style="margin-top:8px;font-size:13px">${p.desc.slice(0,68)}...</div>
+          <button class="view-btn" data-id="${p.id}">View Details</button>
+        </div>
+      `;
+      grid.appendChild(el);
+    });
+
+    // Modal
+    const modal = document.getElementById('modalBackdrop');
+    const modalImg = document.getElementById('modalImg');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalPrice = document.getElementById('modalPrice');
+    const callBtn = document.getElementById('callBtn');
+    const waBtn = document.getElementById('waBtn');
+
+    grid.addEventListener('click', e=>{
+      const btn = e.target.closest('.view-btn');
+      if(!btn) return;
+      const id = Number(btn.dataset.id);
+      const p = products.find(x=>x.id===id);
+      if(!p) return;
+      modalImg.src = p.img;
+      modalTitle.textContent = p.title;
+      modalDesc.textContent = p.desc;
+      modalPrice.textContent = p.price;
+      const waText = encodeURIComponent(`Hello, I'm interested in your product: ${p.title} (ID ${p.id}). Please share price & delivery info.`);
+
+      waBtn.href = `https://wa.me/923337480888?text=${waText}`;
+      callBtn.href = 'tel:+923337480888';
+      modal.classList.add('show');
+    });
+
+    document.getElementById('closeModal').addEventListener('click', ()=>{
+      modal.classList.remove('show');
+    });
+
+    modal.addEventListener('click', e=>{
+      if(e.target===modal) modal.classList.remove('show');
+    });
+
+   
+
+    
+
+  </script>
+</body>
+</html>
+
