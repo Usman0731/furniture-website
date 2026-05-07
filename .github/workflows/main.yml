@@ -1,0 +1,51 @@
+name: Deploy Furniture Website
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to EC2 Server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+
+          script: |
+            cd /home/ubuntu
+
+            # Clone repo first time if not exists
+            if [ ! -d "furniture-website" ]; then
+              git clone https://github.com/Usman0731/furniture-website.git
+            fi
+
+            cd furniture-website
+
+            # Pull latest code
+            git pull origin main
+
+            # Stop and remove old container
+            docker stop furniture-container || true
+            docker rm furniture-container || true
+
+            # Remove old image
+            docker rmi furniture-site || true
+
+            # Build new docker image
+            docker build -t furniture-site .
+
+            # Run new container
+            docker run -d \
+              --name furniture-container \
+              -p 80:80 \
+              --restart unless-stopped \
+              furniture-site
